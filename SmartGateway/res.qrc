@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>weather/image/refresh.png</file>
+        <file>app/image/music.png</file>
+        <file>app/image/bg.png</file>
+        <file>app/image/video.png</file>
+        <file>app/image/control.png</file>
+        <file>app/image/environment.png</file>
+        <file>app/image/monitor.png</file>
+        <file>app2/image/album.png</file>
+        <file>app2/image/camera.png</file>
+        <file>weather/image/cloudy.png</file>
+        <file>weather/image/heavy.png</file>
+        <file>weather/image/middlerain.png</file>
+        <file>weather/image/shower.png</file>
+        <file>weather/image/sunny.png</file>
+        <file>weather/image/thundershower.png</file>
+        <file>weather/image/lightrain.png</file>
+    </qresource>
+</RCC>

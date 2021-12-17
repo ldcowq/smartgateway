@@ -1,0 +1,58 @@
+#ifndef GETSENSORDATABYSERIAL_H
+#define GETSENSORDATABYSERIAL_H
+
+#include <QObject>
+#include <QDebug>
+#include <QMessageBox>
+#include <QTimer>
+#include <QThread>
+#include <QSerialPort>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QSerialPortInfo>
+#include <QtNetwork>
+#include <QHostAddress>
+#include <QtMqtt/qmqttclient.h>
+
+class GetSensorDataBySerial : public QObject
+{
+    Q_OBJECT
+public:
+    explicit GetSensorDataBySerial(QObject *parent = 0);
+    ~GetSensorDataBySerial();
+    QSerialPort *pSerialPort;
+    QTimer *timer;
+    QTimer *checkPortTimer;
+    QString portName;//串口号
+    QJsonDocument doucument;
+    QJsonParseError jsonError;
+    QString scanSerialPort(void);
+    void receive_data(void);
+    int temperatureValue;
+    int humidityValue;
+    int carbonValue;
+    int smokeValue;
+
+    QMqttClient* mqttClient=nullptr;
+    QString publishTopic ="SmartGatewayPub";
+    QString subscribeTopic = "SmartGatewaySub";
+    QMqttClient* connectMqtt(void);
+    void publishMessage(QString jsonMessage);
+    void disconnectMqtt(QMqttClient *mqttClient);
+
+signals:
+
+    //void updateLivingData(int temperature,int humidity);
+    //void updateKitchenData(int carbon,int smoke);
+    void updateSensorData(int temperature,int humidity,int carbon,int smoke);
+    void noSensorSignal();
+    void finished();
+public slots:
+    void pSerialPort_onErrorOccurred(QSerialPort::SerialPortError);
+    //业务处理函数
+    void working();
+    void onMqttConnected();
+    void onMqttReceived(QByteArray message);
+};
+
+#endif // GETSENSORDATABYSERIAL_H
