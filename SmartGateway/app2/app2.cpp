@@ -24,12 +24,7 @@ void App2::layoutInit()
     cameraPushButton->setGeometry(250,20,150,130);
     cameraPushButton->setStyleSheet("border-image:url("":/app2/image/camera.png"");border-radius:15px;text-align:bottom;color:white;font-size:20px;padding-bottom:10px;");
     connect(cameraPushButton,&QPushButton::clicked,this,[=](){
-#ifdef LINUX
-//camera = new Camera();
-#else
-camera = new Camera();
-#endif
-
+    camera = new Camera();
     });
 }
 

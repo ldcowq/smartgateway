@@ -6,7 +6,6 @@
 #include "smartgateway.h"
 SmartGateway::SmartGateway(QWidget *parent): QWidget(parent)
 {
-
     this->setParent(parent);
     this->setGeometry(0, 0, 800, 480);
     this->setFixedSize(800, 480);
@@ -79,7 +78,7 @@ void SmartGateway::layoutInit()
     weather_imageName_QLabel->setStyleSheet("font-size:18px;color:white");
     weather_imageName_QLabel->installEventFilter(this);//给控件安装事件过滤器,给标签增加点击功能
 
-    qDebug() << "SmartGateway: " << QThread::currentThread();
+    //qDebug() << "SmartGateway: " << QThread::currentThread();
     QThread *weatherInfoThread = new QThread;//获取天气信息的子线程
     WeatherInfo *weatherInfo = new WeatherInfo;//创建天气信息对象
     weatherInfo->moveToThread(weatherInfoThread);//对象移动到线程中
@@ -107,7 +106,6 @@ void SmartGateway::layoutInit()
     /**************************app界面****************************/
     appWidget = new QWidget(this);//右边主窗口
     appWidget->setGeometry(230,0,570,480);
-    //appWidget->setStyleSheet("border:1px solid;border-color:red");
 
     mySlidePage = new SlidePage(appWidget);//创建滑动页面
     mySlidePage->resize(appWidget->size());//自适应右边窗口
@@ -123,14 +121,13 @@ void SmartGateway::layoutInit()
 /**************************事件过滤******************************/
 bool SmartGateway::eventFilter(QObject * watched, QEvent * event)
 {
-    if (watched == weather_cityName_QLabel||watched == weather_temperature_QLabel||watched == weather_image_QLabel||watched == weather_imageName_QLabel)
-    {
-        if (event->type() == QEvent::MouseButtonPress)
-        {
-            //getCityName();//单击获取最新的天气
-        }
-    }
-
+//    if (watched == weather_cityName_QLabel||watched == weather_temperature_QLabel||watched == weather_image_QLabel||watched == weather_imageName_QLabel)
+//    {
+//        if (event->type() == QEvent::MouseButtonPress)
+//        {
+//            //getCityName();//单击获取最新的天气
+//        }
+//    }
     if(watched == messageBoard_content)
     {
         if(event->type() == QEvent::MouseButtonPress)

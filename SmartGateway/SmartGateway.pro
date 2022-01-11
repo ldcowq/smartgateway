@@ -11,8 +11,7 @@ QT += network
 QT += serialport
 QT += charts
 QT += mqtt
-
-#QT += multimediawidgets
+QT += multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -37,6 +36,7 @@ SOURCES += main.cpp\
     homecontrol/homecontrol.cpp \
     camera/camera.cpp \
     weather/weatherinfo.cpp \
+    video/customslider.cpp
 
 HEADERS  += smartgateway.h \
     slidepage/slidepage.h \
@@ -52,6 +52,7 @@ HEADERS  += smartgateway.h \
     homecontrol/homecontrol.h \
     camera/camera.h \
     weather/weatherinfo.h \
+    video/customslider.h
 
 RESOURCES += \
     res.qrc
@@ -61,15 +62,25 @@ DISTFILES +=
 SUBDIRS += \
     appdemo/appdemo.pro
 
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/ -lQt5Qmqtt
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/ -lQt5Qmqttd
+unix:!macx: LIBS += -L$$PWD/../../../../3rdLib/qtmqtt/lib/ -lQt5Mqtt
 
-#INCLUDEPATH += $$PWD/.
-#DEPENDPATH += $$PWD/.
+INCLUDEPATH += $$PWD/../../../../3rdLib/qtmqtt/include
+DEPENDPATH += $$PWD/../../../../3rdLib/qtmqtt/include
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../5.9.1/mingw53_32/lib/ -lQt5Mqtt
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../5.9.1/mingw53_32/lib/ -lQt5Mqttd
-else:unix:!macx: LIBS += -L$$PWD/../../5.9.1/mingw53_32/lib/ -lQt5Mqtt
+INCLUDEPATH += /usr/local/include \
+                /usr/local/include/opencv \
+                /usr/local/include/opencv2
 
-INCLUDEPATH += $$PWD/../../5.9.1/mingw53_32/include
-DEPENDPATH += $$PWD/../../5.9.1/mingw53_32/include
+LIBS += /usr/local/lib/libopencv_calib3d.so.3.4 \
+        /usr/local/lib/libopencv_core.so.3.4 \
+        /usr/local/lib/libopencv_features2d.so.3.4 \
+        /usr/local/lib/libopencv_highgui.so.3.4 \
+        /usr/local/lib/libopencv_imgcodecs.so.3.4 \
+        /usr/local/lib/libopencv_imgproc.so.3.4 \
+        /usr/local/lib/libopencv_ml.so.3.4 \
+        /usr/local/lib/libopencv_objdetect.so.3.4 \
+        /usr/local/lib/libopencv_photo.so.3.4 \
+        /usr/local/lib/libopencv_stitching.so.3.4 \
+        /usr/local/lib/libopencv_video.so.3.4 \
+
+/usr/local/lib/libopencv_imgcodecs.so.3.4

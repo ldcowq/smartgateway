@@ -11,11 +11,10 @@
 #include <QJsonDocument>
 #include<QJsonArray>
 #include<QProcess>
-#include "./slidepage/slidepage.h"
-#include "./app/app.h"
-#include "./app2/app2.h"
-#include "./album/album.h"
-//#include "./weather/weather.h"
+#include "slidepage/slidepage.h"
+#include "app/app.h"
+#include "app2/app2.h"
+#include "album/album.h"
 #include "weather/weatherinfo.h"
 
 #define QUERY_IP_URL "http://ip.ws.126.net/ipquery"
@@ -34,7 +33,6 @@ public:
     QJsonDocument jsonDocument;
     QJsonObject jsonObject;
     QJsonParseError jsonError;
-    //Weather *weatherThread;
     void layoutInit();
     /************************时钟界面************************************/
     /*   时钟定时器   */
@@ -83,10 +81,9 @@ public:
     /* 重设大小 */
     void resizeEvent(QResizeEvent *event);
 
+    /*  application pages  */
     App *appPageOne;
     App2 *appPageTwo;
-
-
 public slots:
 
 };

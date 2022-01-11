@@ -19,7 +19,6 @@ public:
     QPushButton * lightPushButton;
     QPushButton * fansPushButton;
     QPushButton * alarmPushButton;
-
 signals:
     void openlight(qint16);
 public slots:

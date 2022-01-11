@@ -7,14 +7,14 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     //a.setQuitOnLastWindowClosed(false);
-    SmartGateway w;
-    w.show();
+    //SmartGateway w;
+    //w.show();
 //    Album album;
 //    album.show();
-//    Video video;
-//    video.show();
+    Video video;
+    video.show();
 //    Environment e;
 //    e.show();
-    w.move(200,200);
+    //w.move(200,200);
     return a.exec();
 }

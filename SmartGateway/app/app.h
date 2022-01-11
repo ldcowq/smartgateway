@@ -9,16 +9,16 @@
 #include<QPixmap>
 #include<QDebug>
 #include<QPainter>
-#include"../album/album.h"
-#include"../video/video.h"
-#include"../music/music.h"
-#include"../environment/environment.h"
-#include"../homecontrol/homecontrol.h"
+#include"album/album.h"
+#include"video/video.h"
+#include"music/music.h"
+#include"environment/environment.h"
+#include"homecontrol/homecontrol.h"
 class App : public QWidget
 {
     Q_OBJECT
 public:
-    explicit App(QWidget *parent = 0);
+    explicit App(QWidget *parent);
     QWidget *mainWidget;
     void resizeEvent(QResizeEvent *event);
     void layoutInit();

@@ -16,5 +16,15 @@
         <file>weather/image/sunny.png</file>
         <file>weather/image/thundershower.png</file>
         <file>weather/image/lightrain.png</file>
+        <file>video/videoIcon/videoPause.png</file>
+        <file>video/videoIcon/videoPlay.png</file>
+        <file>video/videoIcon/videoPrevious.png</file>
+        <file>video/videoIcon/videoNext.png</file>
+        <file>video/videoIcon/videoExit_hover.png</file>
+        <file>video/videoIcon/videoExit.png</file>
+        <file>video/videoIcon/videoNext_hover.png</file>
+        <file>video/videoIcon/videoPlay_hover.png</file>
+        <file>video/videoIcon/videoPrevious_hover.png</file>
+        <file>video/videoIcon/videoPause_hover.png</file>
     </qresource>
 </RCC>

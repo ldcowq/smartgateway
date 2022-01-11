@@ -3,29 +3,19 @@
 #include <QWidget>
 #include<QPushButton>
 #include"../album/album.h"
-
-#ifdef LINUX
-//#include"../camera/camera.h"
-#else
 #include"../camera/camera.h"
-#endif
 class App2 : public QWidget
 {
     Q_OBJECT
 public:
-    explicit App2(QWidget *parent = 0);
-
+    explicit App2(QWidget *parent);
     QWidget *mainWidget;
     void resizeEvent(QResizeEvent *event);
     void layoutInit();
     QPushButton *albumPushButton;
     QPushButton *cameraPushButton;
     Album *album;
-#ifdef LINUX
-//Camera *camera;
-#else
-Camera *camera;
-#endif
+    Camera *camera;
 signals:
 
 public slots:

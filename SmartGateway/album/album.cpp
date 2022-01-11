@@ -11,19 +11,17 @@ Album::Album(QWidget *parent) : QWidget(parent)
 
 void Album::layoutInit()
 {
-    //fileList = FileTools::getFileAbsolutePath("/home/ldc/daily/image/",&imageCount);//获取制定目录下的所有图片绝对路径
-    //fileList = FileTools::getFileAbsolutePath("/mnt/sd/image/",&imageCount);//获取制定目录下的所有图片绝对路径，放到字符串列表
-    fileList = FileTools::getFileAbsolutePath("D:/developer_tool_install/qt5.9.1/qtProjects/SmartGateway/album/pictures",&imageCount);
+    fileList = FileTools::getFileAbsolutePath("/home/pi/workdir/smgw_media/photos",&imageCount);
     qDebug() << fileList<<endl;
     lastPageIndex = imageCount-1;//最后一张图片的索引=总图片数－１
-    nextPageIndex = 1;
+    nextPageIndex = currentImageIndex+1;
 
     showPic = new QLabel(this);//创建一个标签用于显示图片
     showPic->setGeometry(0,0,800,440);
     showPic->setFixedSize(800,440);
     showPic->show();
-    //showPic->setScaledContents(true);//设置自适应，放大缩小功能将不能使用
     showPic->setStyleSheet("background-color:black");
+    //showPic->setScaledContents(true);//设置自适应，放大缩小功能将不能使用
 
     pixmap.load(fileList.at(currentImageIndex));
     pixmap = pixmap.scaled(showPic->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);//根据标签设置自适应
@@ -44,7 +42,6 @@ void Album::layoutInit()
         if(lastPageIndex==0)lastPageIndex = abs(lastPageIndex-(imageCount-1))+1;
         lastPageIndex--;
         nextPageIndex--;
-        //qDebug()<<lastPageIndex<<"----------"<<currentImageIndex<<"-----------"<<nextPageIndex<<endl;
     });
 
     nextPagePushButton = new QPushButton("下一张",this);
@@ -60,7 +57,6 @@ void Album::layoutInit()
         if(lastPageIndex==(imageCount-1))lastPageIndex = abs(lastPageIndex-(imageCount-1))-1;
         nextPageIndex++;
         lastPageIndex++;
-        //qDebug()<<lastPageIndex<<"----------"<<currentImageIndex<<"-----------"<<nextPageIndex<<endl;
     });
 
     zoomInPushButton = new QPushButton("放大",this);
@@ -72,7 +68,6 @@ void Album::layoutInit()
         pixmap.load(fileList.at(currentImageIndex));
         pixmap = pixmap.scaled(zoomValue*showPic->width(),zoomValue*showPic->height(),Qt::KeepAspectRatio);
         showPic->setPixmap(pixmap);
-
     });
 
     zoomOutPushButton = new QPushButton("缩小",this);
@@ -84,7 +79,6 @@ void Album::layoutInit()
         pixmap.load(fileList.at(currentImageIndex));
         pixmap = pixmap.scaled(zoomValue*showPic->width(),zoomValue*showPic->height(),Qt::KeepAspectRatio);
         showPic->setPixmap(pixmap);
-
     });
 
     rotateRightPushButton = new QPushButton("右转",this);
