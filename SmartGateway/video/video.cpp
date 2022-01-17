@@ -20,8 +20,8 @@ Video::Video(QWidget *parent) : QWidget(parent)
     //设置播放器的显示窗口
     mediaPlayer->setVideoOutput(videoWidget);
     mediaPlayer->setVolume(100);
-    mediaPlayer->setMuted(false);
-    mediaPlayer->stop();
+    //mediaPlayer->setMuted(false);
+    mediaPlayer->pause();
 
     //获取制定目录下的所有视频绝对路径
     fileList = FileTools::getFileNames("/home/pi/workdir/smgw_media/videos/",&videoCount);
@@ -31,29 +31,25 @@ Video::Video(QWidget *parent) : QWidget(parent)
         //qDebug()<<fileList.at(i)<<endl;
         playList->addItem(fileList.at(i));
         mediaPlayerList->addMedia(QUrl::fromLocalFile("/home/pi/workdir/smgw_media/videos/"+fileList.at(i)));
-        //qDebug()<<url<<endl;
     }
     playList->item(0)->setSelected(true);//always select first one by default
     mediaPlayerList->setPlaybackMode(QMediaPlaylist::Loop);
     currentItem = playList->item(0);
 
+    connect(playList,&QListWidget::itemClicked,this,[=](QListWidgetItem *item){
+       currentItem = item;
+    });
+
     //double click to play video
-    connect(playList,&QListWidget::itemDoubleClicked,[=](QListWidgetItem *item){
+    connect(playList,&QListWidget::itemDoubleClicked,this,[=](QListWidgetItem *item){
         sliderTimer->stop();
+        currentItem=item;
         playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPlay.png"");}"
                                       "QPushButton:hover{border-image:url("":/video/videoIcon/videoPlay_hover.png"");}");
-        currentItem=item;
-
-
         customSlider->setEnabled(true);
-        customSlider->setRange(0,maxValue);
         sliderTimer->start(50);
         connect(sliderTimer,&QTimer::timeout,this,[=]{
            qint64 playerPos = mediaPlayer->position();//video lengths(ms)
-//           playerPos *=maxValue;
-//           qint64 playerDur = mediaPlayer->duration();
-
-//           qint64 result = playerPos/playerDur;
            customSlider->setValue(playerPos);
         });
 
@@ -61,33 +57,30 @@ Video::Video(QWidget *parent) : QWidget(parent)
         //int selectIndex = playList->currentRow();//get index from playlist
         QMediaContent selectMedia = mediaPlayerList->media(selectIndex);//find the file through the index
         mediaPlayer->setMedia(selectMedia);
+        //mediaPlayer->setMedia(QUrl::fromLocalFile("/home/pi/workdir/smgw_media/videos/twlw.mp4"));
+        mediaPlayer->setVolume(100);
         mediaPlayer->play();
     });
 
+    //when loading the video,get the lengths of the viedo and set the slider range
     connect(mediaPlayer,&QMediaPlayer::positionChanged,this,[=](){
         customSlider->setRange(0,mediaPlayer->duration());
     });
+
+    //progress bar notify video to modify progress
     connect(customSlider,&CustomSlider::customSliderClick,this,[=](){
         mediaPlayer->setPosition(customSlider->value());
     });
+
+    //move the progress bar and notify video to modify progress
     connect(customSlider,&CustomSlider::sliderMoved,this,[=](){
         sliderTimer->stop();
         mediaPlayer->setPosition(customSlider->value());
     });
+
     connect(customSlider,&CustomSlider::sliderReleased,this,[=](){
         sliderTimer->start();
     });
-
-
-
-    //set the length of the progress bar
-
-
-    //video notify progress bar to modify value
-
-
-    //progress bar notify video to modify progress
-
 }
 
 Video::~Video()
@@ -122,13 +115,24 @@ void Video::layoutInit()
     lastPushButton->setGeometry(250,440,32,32);
     lastPushButton->show();
     connect(lastPushButton,&QPushButton::clicked,mainWidget,[=](){
-        int nextVideoIndex = playList->row(currentItem);//获取当前播放或者选中列表的歌曲行号
-        if(nextVideoIndex==0) nextVideoIndex=playList->count();//判断是否已经是第一首
-        nextVideoIndex--;//第一首的上一首是最后一首
-        currentItem = playList->item(nextVideoIndex);
+        int lastVideoIndex = playList->row(currentItem);//获取当前播放或者选中列表的歌曲行号
+        if(lastVideoIndex==0) lastVideoIndex=playList->count();//判断是否已经是第一首
+        lastVideoIndex--;//第一首的上一首是最后一首
+        currentItem = playList->item(lastVideoIndex);
         currentItem->setSelected(true);//set item selected
-        QMediaContent selectMedia = mediaPlayerList->media(nextVideoIndex);//find the file through the index
+
+        sliderTimer->stop();
+        playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPlay.png"");}"
+                                      "QPushButton:hover{border-image:url("":/video/videoIcon/videoPlay_hover.png"");}");
+        customSlider->setEnabled(true);
+        connect(sliderTimer,&QTimer::timeout,this,[=]{
+           qint64 playerPos = mediaPlayer->position();//video lengths(ms)
+           customSlider->setValue(playerPos);
+        });
+        sliderTimer->start(50);
+        QMediaContent selectMedia = mediaPlayerList->media(lastVideoIndex);//find the file through the index
         mediaPlayer->setMedia(selectMedia);
+        mediaPlayer->setVolume(100);
         mediaPlayer->play();
     });
 
@@ -141,20 +145,29 @@ void Video::layoutInit()
         if(mediaPlayer->state()==QMediaPlayer::PlayingState)
         {
             mediaPlayer->pause();
+            sliderTimer->stop();
             playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPause.png"");}"
                                           "QPushButton:hover{border-image:url("":/video/videoIcon/videoPause_hover.png"");}");
         }else if(mediaPlayer->state()==QMediaPlayer::PausedState)
         {
+            playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPlay.png"");}"
+                                          "QPushButton:hover{border-image:url("":/video/videoIcon/videoPlay_hover.png"");}");
             mediaPlayer->play();
-            playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPlay.png"");}"
-                                          "QPushButton:hover{border-image:url("":/video/videoIcon/videoPlay_hover.png"");}");
-        }else //stop status
-        {
-            playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPlay.png"");}"
-                                          "QPushButton:hover{border-image:url("":/video/videoIcon/videoPlay_hover.png"");}");
+            sliderTimer->start();
+        }else if (mediaPlayer->state()==QMediaPlayer::StoppedState) {
             int selectIndex = playList->currentRow();//get index from playlist
+            sliderTimer->stop();
+            playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPlay.png"");}"
+                                          "QPushButton:hover{border-image:url("":/video/videoIcon/videoPlay_hover.png"");}");
+            customSlider->setEnabled(true);
+            connect(sliderTimer,&QTimer::timeout,this,[=]{
+               qint64 playerPos = mediaPlayer->position();//video lengths(ms)
+               customSlider->setValue(playerPos);
+            });
+            sliderTimer->start(50);
             QMediaContent selectMedia = mediaPlayerList->media(selectIndex);//find the file through the index
             mediaPlayer->setMedia(selectMedia);
+            mediaPlayer->setVolume(100);
             mediaPlayer->play();
         }
     });
@@ -165,15 +178,28 @@ void Video::layoutInit()
     nextPushButton->setGeometry(370,440,32,32);
     nextPushButton->show();
     connect(nextPushButton,&QPushButton::clicked,mainWidget,[=](){
+
         int nextVideoIndex = playList->row(currentItem);//获取当前播放或者选中列表的歌曲行号
-        qDebug()<<nextVideoIndex<<endl;
+
         nextVideoIndex++;
         if(nextVideoIndex==playList->count()) nextVideoIndex=0;//判断是否已经是第一首
         //第一首的上一首是最后一首
         currentItem = playList->item(nextVideoIndex);
         currentItem->setSelected(true);//set item selected
+
+        sliderTimer->stop();
+        playPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPlay.png"");}"
+                                      "QPushButton:hover{border-image:url("":/video/videoIcon/videoPlay_hover.png"");}");
+        customSlider->setEnabled(true);
+        connect(sliderTimer,&QTimer::timeout,this,[=]{
+           qint64 playerPos = mediaPlayer->position();//video lengths(ms)
+           customSlider->setValue(playerPos);
+        });
+        sliderTimer->start(50);
+
         QMediaContent selectMedia = mediaPlayerList->media(nextVideoIndex);//find the file through the index
         mediaPlayer->setMedia(selectMedia);
+        mediaPlayer->setVolume(100);
         mediaPlayer->play();
     });
 
