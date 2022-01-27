@@ -36,7 +36,11 @@ SOURCES += main.cpp\
     homecontrol/homecontrol.cpp \
     camera/camera.cpp \
     weather/weatherinfo.cpp \
-    video/customslider.cpp
+    video/customslider.cpp \
+    monitor/monitor.cpp \
+    monitor/opencvdecode.cpp \
+    camera/monitorcateye.cpp \
+    camera/cateye.cpp
 
 HEADERS  += smartgateway.h \
     slidepage/slidepage.h \
@@ -52,7 +56,12 @@ HEADERS  += smartgateway.h \
     homecontrol/homecontrol.h \
     camera/camera.h \
     weather/weatherinfo.h \
-    video/customslider.h
+    video/customslider.h \
+    monitor.h \
+    monitor/monitor.h \
+    monitor/opencvdecode.h \
+    camera/monitorcateye.h \
+    camera/cateye.h
 
 RESOURCES += \
     res.qrc
@@ -82,5 +91,6 @@ LIBS += /usr/local/lib/libopencv_calib3d.so.3.4 \
         /usr/local/lib/libopencv_photo.so.3.4 \
         /usr/local/lib/libopencv_stitching.so.3.4 \
         /usr/local/lib/libopencv_video.so.3.4 \
-
-/usr/local/lib/libopencv_imgcodecs.so.3.4
+        /usr/local/lib/libopencv_videoio.so.3.4 \
+        /usr/local/lib/libopencv_imgcodecs.so.3.4 \
+        -lwiringPi

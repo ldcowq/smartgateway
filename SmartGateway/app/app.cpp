@@ -34,6 +34,9 @@ void App::layoutInit()
     monitorPushbutton=new QPushButton("视频监控",this);
     monitorPushbutton->setGeometry(400,20,150,130);
     monitorPushbutton->setStyleSheet("border-image:url("":/app/image/monitor.png"");border-radius:15px;text-align:bottom;color:white;font-size:20px;padding-bottom:10px;");
+    connect(monitorPushbutton,&QPushButton::clicked,this,[=](){
+       monitor = new Monitor();
+    });
 
     musicPushButton = new QPushButton("音乐播放器",this);
     musicPushButton->setGeometry(400,300,150,155);
@@ -50,7 +53,7 @@ void App::layoutInit()
        video = new Video();
     });
 
-    fileList = FileTools::getFileAbsolutePath("/home/pi/workdir/smgw_media/photos",&imageCount);//获取制定目录下的所有图片绝对路径
+    fileList = FileTools::getFileAbsolutePath("/home/pi/workdir/smgw_media/photos/",&imageCount);//获取制定目录下的所有图片绝对路径
     imageTimer = new QTimer(this);
     imageTimer->start(2000);
     albumLabel = new QLabel(this);
@@ -75,7 +78,7 @@ bool App::eventFilter(QObject * watched, QEvent * event)
     {
         if (event->type() == QEvent::MouseButtonPress)
         {
-            album = new Album();
+            album = new Album("/home/pi/workdir/smgw_media/photos/");
         }
     }
     return false;//处理完事件后，不需要事件继续传播

@@ -10,7 +10,7 @@ class Album : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Album(QWidget *parent = 0);
+    explicit Album(QString path);
     QPushButton *exitPushButton;
     QPushButton *lastPagePushButton;
     QPushButton *nextPagePushButton;

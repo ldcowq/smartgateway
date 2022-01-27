@@ -26,5 +26,13 @@
         <file>video/videoIcon/videoPlay_hover.png</file>
         <file>video/videoIcon/videoPrevious_hover.png</file>
         <file>video/videoIcon/videoPause_hover.png</file>
+        <file>monitor/monitorIcon/monitor_exit_hover.png</file>
+        <file>monitor/monitorIcon/monitor_exit.png</file>
+        <file>monitor/monitorIcon/monitor_save_hover.png</file>
+        <file>monitor/monitorIcon/monitor_save.png</file>
+        <file>monitor/monitorIcon/monitor_start_record.png</file>
+        <file>monitor/monitorIcon/monitor_stop_record.png</file>
+        <file>monitor/monitorIcon/monitor_printScreen.png</file>
+        <file>monitor/monitorIcon/monitor_printScreen_hover.png</file>
     </qresource>
 </RCC>

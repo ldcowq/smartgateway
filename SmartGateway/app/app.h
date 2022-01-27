@@ -14,6 +14,7 @@
 #include"music/music.h"
 #include"environment/environment.h"
 #include"homecontrol/homecontrol.h"
+#include"monitor/monitor.h"
 class App : public QWidget
 {
     Q_OBJECT
@@ -37,6 +38,7 @@ public:
 
     Video *video;
     Music *music;
+    Monitor *monitor;
     Environment *environment;
     HomeControl *homeControl;
 signals:

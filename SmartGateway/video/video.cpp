@@ -24,13 +24,13 @@ Video::Video(QWidget *parent) : QWidget(parent)
     mediaPlayer->pause();
 
     //获取制定目录下的所有视频绝对路径
-    fileList = FileTools::getFileNames("/home/pi/workdir/smgw_media/videos/",&videoCount);
+    fileList = FileTools::getFileNames("/home/pi/workdir/smgw_media/Monitor_videos/",&videoCount);
     //遍历文件列表,并显示到列表窗口
     for(int i=0;i<fileList.size();i++)
     {
         //qDebug()<<fileList.at(i)<<endl;
         playList->addItem(fileList.at(i));
-        mediaPlayerList->addMedia(QUrl::fromLocalFile("/home/pi/workdir/smgw_media/videos/"+fileList.at(i)));
+        mediaPlayerList->addMedia(QUrl::fromLocalFile("/home/pi/workdir/smgw_media/Monitor_videos/"+fileList.at(i)));
     }
     playList->item(0)->setSelected(true);//always select first one by default
     mediaPlayerList->setPlaybackMode(QMediaPlaylist::Loop);
@@ -57,7 +57,7 @@ Video::Video(QWidget *parent) : QWidget(parent)
         //int selectIndex = playList->currentRow();//get index from playlist
         QMediaContent selectMedia = mediaPlayerList->media(selectIndex);//find the file through the index
         mediaPlayer->setMedia(selectMedia);
-        //mediaPlayer->setMedia(QUrl::fromLocalFile("/home/pi/workdir/smgw_media/videos/twlw.mp4"));
+        //mediaPlayer->setMedia(QUrl::fromLocalFile("/home/pi/workdir/smgw_media/Monitor_videos/twlw.mp4"));
         mediaPlayer->setVolume(100);
         mediaPlayer->play();
     });

@@ -1,18 +1,19 @@
 #include "album.h"
-Album::Album(QWidget *parent) : QWidget(parent)
+Album::Album(QString path)
 {
     this->setGeometry(0,0,800,480);
     this->show();
     this->move(200,200);
     this->setAttribute(Qt::WA_DeleteOnClose,true);//设置关闭窗口自动释放资源
+    fileList = FileTools::getFileAbsolutePath(path,&imageCount);
+    qDebug() << fileList<<endl;
     layoutInit();
 }
 
 
 void Album::layoutInit()
 {
-    fileList = FileTools::getFileAbsolutePath("/home/pi/workdir/smgw_media/photos",&imageCount);
-    qDebug() << fileList<<endl;
+
     lastPageIndex = imageCount-1;//最后一张图片的索引=总图片数－１
     nextPageIndex = currentImageIndex+1;
 
@@ -27,7 +28,6 @@ void Album::layoutInit()
     pixmap = pixmap.scaled(showPic->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);//根据标签设置自适应
     showPic->setPixmap(pixmap);
     showPic->setAlignment(Qt::AlignCenter);
-
 
     lastPagePushButton = new QPushButton("上一张",this);
     lastPagePushButton->setGeometry(300,440,70,40);

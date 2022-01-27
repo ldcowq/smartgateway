@@ -4,6 +4,7 @@ Camera::Camera(QWidget *parent) : QWidget(parent)
 {
     layoutInit();
     this->move(200,200);
+    QString str = "/dev/video2";
     camera=new QCamera();//系统摄像头
     cameraViewFinder=new QCameraViewfinder(this);//系统摄像头取景器
     cameraViewFinder->setGeometry(0,0,700,480);
@@ -13,7 +14,8 @@ Camera::Camera(QWidget *parent) : QWidget(parent)
     camera->setCaptureMode(QCamera::CaptureStillImage);
     camera->setViewfinder(cameraViewFinder);
     camera->start();
-    FileTools::getFileAbsolutePath("D:/developer_tool_install/qt5.9.1/qtProjects/SmartGateway/album/pictures",&imageNum);
+    qDebug()<<QCameraInfo::availableCameras()<<endl;
+    //FileTools::getFileAbsolutePath("/home/pi/workdir/smgw_media/camera_photos",&imageNum);
     connect(exitPushButton,&QPushButton::clicked,this,[=](){
         camera->stop();
         delete camera;
@@ -23,7 +25,6 @@ Camera::Camera(QWidget *parent) : QWidget(parent)
 
     connect(takePhotoPushButton,&QPushButton::clicked,this,[=](){
         cameraImageCapture->capture();
-
     });
 
     connect(cameraImageCapture,&QCameraImageCapture::imageCaptured,this,[=](int id,QImage image){
@@ -34,19 +35,12 @@ Camera::Camera(QWidget *parent) : QWidget(parent)
         const QPixmap *pixmap = openAlbumLabel->pixmap();
         if(pixmap)
         {
-            //qDebug()<<photoName<<endl;
-            //pixmap->save("/mnt/sd/image/kk.jpg");
-#ifdef LINUX
-         pixmap->save("/home/ldc/daily/image/"+photoName+".jpg");
-#else
-
-         imageNum = imageNum +1;
-         qDebug()<<imageNum<<endl;
-         QString str = QString::number(imageNum);
-         QString savePath = "D:/developer_tool_install/qt5.9.1/qtProjects/SmartGateway/album/pictures/"+str+".jpg";
-         qDebug()<<savePath<<endl;
-         pixmap->save(savePath,0);
-#endif
+             imageNum = imageNum +1;
+             qDebug()<<imageNum<<endl;
+             QString str = QString::number(imageNum);
+             QString savePath = "/home/pi/workdir/smgw_media/camera_photos/"+str+".jpg";
+             qDebug()<<savePath<<endl;
+             pixmap->save(savePath,0);
         }
     });
 
@@ -90,7 +84,7 @@ bool Camera::eventFilter(QObject * watched, QEvent *event)
     {
         if ( event->type()== QEvent::MouseButtonPress)
         {
-            album = new Album();
+            //album = new Album();
         }
     }
     return false;//处理完事件后，不需要事件继续传播
