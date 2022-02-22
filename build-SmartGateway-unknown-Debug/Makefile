@@ -585,7 +585,17 @@ qrc_res.cpp: ../SmartGateway/res.qrc \
 		../SmartGateway/monitor/monitorIcon/monitor_save.png \
 		../SmartGateway/monitor/monitorIcon/monitor_stop_record.png \
 		../SmartGateway/monitor/monitorIcon/monitor_printScreen.png \
-		../SmartGateway/monitor/monitorIcon/monitor_start_record.png
+		../SmartGateway/monitor/monitorIcon/monitor_start_record.png \
+		../SmartGateway/environment/environmentIcon/environment_back.png \
+		../SmartGateway/environment/environmentIcon/livingroom_light_open.png \
+		../SmartGateway/environment/environmentIcon/beep_open.png \
+		../SmartGateway/environment/environmentIcon/beep_close.png \
+		../SmartGateway/environment/environmentIcon/kitchen_fan_close.png \
+		../SmartGateway/environment/environmentIcon/kitchen_fan_open.png \
+		../SmartGateway/environment/environmentIcon/kitchen_light_close.png \
+		../SmartGateway/environment/environmentIcon/environment_back_hover.png \
+		../SmartGateway/environment/environmentIcon/livingroom_light_close.png \
+		../SmartGateway/environment/environmentIcon/kitchen_light_open.png
 	/usr/lib/qt5/bin/rcc -name res ../SmartGateway/res.qrc -o qrc_res.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h

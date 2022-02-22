@@ -97,7 +97,7 @@ void SmartGateway::layoutInit()
     messageBoard_Title->setAlignment(Qt::AlignCenter);
     messageBoard_Title->setStyleSheet("border: 1px solid;border-color:white;font-size:22px;color:white");
 
-    messageBoard_content = new QLabel("点击开始留言！",this);
+    messageBoard_content = new QLabel(this);
     messageBoard_content->setGeometry(10,290,210,180);
     messageBoard_content->setAlignment(Qt::AlignCenter);
     messageBoard_content->setStyleSheet("border: 1px solid;border-color:white;font-size:16px;color:white");
@@ -128,14 +128,14 @@ bool SmartGateway::eventFilter(QObject * watched, QEvent * event)
 //            //getCityName();//单击获取最新的天气
 //        }
 //    }
-    if(watched == messageBoard_content)
-    {
-        if(event->type() == QEvent::MouseButtonPress)
-        {
-            messageBoard_content->setText("");
-            //调用语音助手
-        }
-    }
+//    if(watched == messageBoard_content)
+//    {
+//        if(event->type() == QEvent::MouseButtonPress)
+//        {
+//            messageBoard_content->setText("");
+//            //调用语音助手
+//        }
+//    }
     return false;//处理完事件后，不需要事件继续传播
     //return SmartGateway::eventFilter(watched, event);//继续传播，如果注释上一行，程序不能运行
 }

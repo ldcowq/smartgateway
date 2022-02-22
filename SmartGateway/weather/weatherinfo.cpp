@@ -21,15 +21,16 @@ void WeatherInfo::replyFinished_getCity(QNetworkReply* reply)
 {
     textCodec = QTextCodec::codecForName("gbk");
     cityName = textCodec->toUnicode(reply->readAll());
-    if(cityName.isEmpty()||cityName.isNull())
-    {
-        emit updateWeather("null","null","border-image:/weather/image/refresh.png","null");
-        return;
-    }
+//    if(cityName.isEmpty()||cityName.isNull())
+//    {
+//        emit updateWeather("null","null","border-image:/weather/image/refresh.png","null");
+//        return;
+//    }
     int startIndex = cityName.indexOf(":")+2;
     int endIndex = cityName.lastIndexOf(",")-2;
     cityName = cityName.mid(startIndex,endIndex-startIndex);//get cityname
     reply->deleteLater();//release reply object
+    cityName = "广州";
 
     /**************使用城市名，获取该地区天气**************************/
     netWorkManager = new QNetworkAccessManager(this);

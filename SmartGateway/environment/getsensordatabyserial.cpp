@@ -8,10 +8,9 @@ GetSensorDataBySerial::GetSensorDataBySerial(QObject *parent) : QObject(parent)
 
 void GetSensorDataBySerial::working()
 {
+    reconnectTimer = new QTimer();
     timer =new QTimer();
     checkPortTimer = new QTimer();
-    qDebug() << "current address: " << QThread::currentThread();
-    qDebug() << "thread count: " << QThread::idealThreadCount();
     scanSerialPort();
     while (mPortName==NULL) {
         QThread::sleep(1);
@@ -26,9 +25,9 @@ void GetSensorDataBySerial::working()
     }
 
     qDebug() << "已检测到设备: " << mPortName;
-    connectMqtt();
-    //qDebug() <<"emit finished()"<<endl;
-    //emit finished();
+
+    receiveSerialData();
+    //reConnectMqtt();
 }
 
 void GetSensorDataBySerial::connectMqtt()
@@ -45,6 +44,9 @@ void GetSensorDataBySerial::connectMqtt()
     mqttClient->setPassword("123");
     mqttClient->connectToHost();
     connect(mqttClient,&QMqttClient::connected,this,&GetSensorDataBySerial::onMqttConnected);
+    connect(mqttClient,&QMqttClient::disconnected,this,[=](){
+        reConnectMqtt();
+    });
 }
 
 void GetSensorDataBySerial::onMqttConnected()
@@ -54,12 +56,7 @@ void GetSensorDataBySerial::onMqttConnected()
         qDebug() << "已连接服务器: "<<mqttClient->hostname();
         mqttClient->subscribe(QMqttTopicFilter(subscribeTopic));
         connect(mqttClient,&QMqttClient::messageReceived,this,&GetSensorDataBySerial::onMqttReceived);
-        if(mqttClient!=NULL&&mqttClient->state()==QMqttClient::Connected)
-        {
-            qDebug() << "正在采集传感器数据... ";
-            receiveSerialData();
-
-        }
+        reconnectTimer->stop();
     }else {
         reConnectMqtt();
     }
@@ -84,28 +81,30 @@ void GetSensorDataBySerial::disconnectMqtt(QMqttClient **mqttclient)
 
 void GetSensorDataBySerial::reConnectMqtt()
 {
-    QTimer* timer = new QTimer();
-    disconnectMqtt(&mqttClient);
-    connect(timer,&QTimer::timeout,this,[=]{
+    connect(reconnectTimer,&QTimer::timeout,this,[=]{
         connectMqtt();
     });
-    timer->start(3000);
-    if(mqttClient!=NULL&&mqttClient->state()==QMqttClient::Connected)
-    {
-        timer->stop();
-    }
+    reconnectTimer->start(3000);
 }
 
 void GetSensorDataBySerial::receiveSerialData()
 {
-
-    qDebug()<<pSerialPort;
-
     if(pSerialPort->open(QSerialPort::ReadWrite))
     {
         //串口获取传感器数据
         qDebug()<<"Open uart successfully!";
         connect(pSerialPort,&QSerialPort::readyRead,this,[=](){
+
+            if(mqttClient==nullptr)
+            {
+                connectMqtt();
+            }
+
+            if(mqttClient->state()==QMqttClient::Disconnected)
+            {
+                reConnectMqtt();
+            }
+
             timer->start(30);//一次串口读取数据开始
             connect(timer,&QTimer::timeout,this,[=](){
                 recvBuf=pSerialPort->readAll();
@@ -120,45 +119,62 @@ void GetSensorDataBySerial::receiveSerialData()
                         if(doucument.isObject())
                         {
                             QJsonObject object =doucument.object();
-                            QString sensorType = object.value("type").toString().trimmed();
-                            if(QString::compare("kitchen",sensorType)==0)
+
+                            QString devicesType = object.value("type").toString().trimmed();
+                            int devicesId = object.value("deviceId").toInt();
+                            qDebug()<<devicesType<<"  "<<devicesId<<endl;
+
+                            if(devicesId==1)//livingRoom device
                             {
-                                carbonValue = object.value("Carbon").toInt();
-                                smokeValue = object.value("Smoke").toInt();
-                                qDebug()<<carbonValue<<smokeValue<<endl;
-                                //emit updateKitchenData(carbonValue,smokeValue);
+                                //qDebug()<<"emit livingRoom heart beat:"<<devicesId<<endl;
+                                int state = object.value("state").toInt();
+                                emit sendLivingRoomHeartBeat(devicesId,state);
                             }
 
-                            if(QString::compare("living",sensorType)==0)
+                            if(devicesId==2)//kitchen device
+                            {
+                                //qDebug()<<"emit kitchen heart beat:"<<devicesId<<endl;
+                                int state = object.value("state").toInt();
+                                emit sendKitchenHeartBeat(devicesId,state);
+                            }
+
+                            if(QString::compare("kitchen",devicesType)==0)
+                            {
+                                carbonValue = object.value("Carbon").toInt();
+                                smokeValue = object.value("Smoke").toInt();                                
+                                emit updateMqData(carbonValue,smokeValue);
+                            }
+
+                            if(QString::compare("living",devicesType)==0)
                             {
                                 temperatureValue = object.value("Temperature").toInt();
                                 humidityValue = object.value("Humidity").toInt();
-                                qDebug()<<temperatureValue<<humidityValue<<endl;
-                                //emit updateLivingData(temperatureValue,humidityValue);
+                                emit updateDht11Data(temperatureValue,humidityValue);
                             }
-                            emit updateSensorData(temperatureValue,humidityValue,carbonValue,smokeValue);
+
+//                            if(temperatureValue>100||temperatureValue<0||humidityValue>100||humidityValue<0||
+//                                    carbonValue>100||carbonValue<0||smokeValue>100||smokeValue<0) return;
+                            //emit updateSensorData(temperatureValue,humidityValue,carbonValue,smokeValue);
                         }
                     }
 
                     QString jsonMessage =QString(recvBuf);
-                    if(mqttClient->state()==QMqttClient::Connected&&mqttClient!=NULL)
+                    if(mqttClient!=nullptr)
                     {
-                        //网关显示数据后，上传到云端
-                        //发布主题
-                        qDebug()<<"payload:"+jsonMessage<<endl;
-                        mqttClient->publish(QMqttTopicName(publishTopic),jsonMessage.toLocal8Bit());
-                    }else{
-                        reConnectMqtt();
+                        if(mqttClient->state()==QMqttClient::Connected&&mqttClient!=NULL)
+                        {
+                            //qDebug()<<"payload:"+jsonMessage<<endl;
+                            mqttClient->publish(QMqttTopicName(publishTopic),jsonMessage.toLocal8Bit());
+                        }else{
+                            reConnectMqtt();
+                        }
                     }
                     recvBuf.clear();
                 }
         });
      });//串口获取传感器数据结束
     timer->stop();//一次串口数据获取完成
-    }else{
-        QThread::sleep(1);
     }
-
 }
 
 void GetSensorDataBySerial::pSerialPort_onErrorOccurred(QSerialPort::SerialPortError e)
@@ -183,7 +199,7 @@ void GetSensorDataBySerial::scanSerialPort()
     if(!serialPortList.isEmpty())
     {
         foreach(QSerialPortInfo serialInfo,QSerialPortInfo::availablePorts()){//遍历串口
-
+            qDebug()<<serialInfo.serialNumber()<<"\n";
             if(serialInfo.serialNumber()==QString::fromLocal8Bit("0001"))//判断是否为usb串口0
             {
                 mPortName=serialInfo.portName();
@@ -207,12 +223,6 @@ void GetSensorDataBySerial::scanSerialPort()
 
 void GetSensorDataBySerial::initSerialPort(QString mPortName)
 {
-    if(pSerialPort!=NULL)
-    {
-        pSerialPort->close();
-        delete pSerialPort;
-    }
-
     if(!mPortName.isEmpty()&&!mPortName.isNull())
     {
         pSerialPort=new QSerialPort(this);
@@ -236,3 +246,28 @@ GetSensorDataBySerial::~GetSensorDataBySerial()
     delete pSerialPort;
 }
 
+void GetSensorDataBySerial::onLivingRoomLight(QString status)
+{
+    qDebug()<<"status = "<<status<<endl;
+    pSerialPort->write(status.toUtf8().data(),status.size());
+}
+
+void GetSensorDataBySerial::onLivingRoomBeep(QString status)
+{
+    qDebug()<<"status = "<<status<<endl;
+    pSerialPort->write(status.toUtf8().data(),status.size());
+}
+
+
+void GetSensorDataBySerial::onkitchenLight(QString status)
+{
+    qDebug()<<"status = "<<status<<endl;
+    pSerialPort->write(status.toUtf8().data(),status.size());
+}
+
+
+void GetSensorDataBySerial::onkitchenFan(QString status)
+{
+    qDebug()<<"status = "<<status<<endl;
+    pSerialPort->write(status.toUtf8().data(),status.size());
+}

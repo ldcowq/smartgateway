@@ -34,5 +34,15 @@
         <file>monitor/monitorIcon/monitor_stop_record.png</file>
         <file>monitor/monitorIcon/monitor_printScreen.png</file>
         <file>monitor/monitorIcon/monitor_printScreen_hover.png</file>
+        <file>environment/environmentIcon/environment_back.png</file>
+        <file>environment/environmentIcon/livingroom_light_close.png</file>
+        <file>environment/environmentIcon/livingroom_light_open.png</file>
+        <file>environment/environmentIcon/kitchen_fan_close.png</file>
+        <file>environment/environmentIcon/kitchen_fan_open.png</file>
+        <file>environment/environmentIcon/kitchen_light_close.png</file>
+        <file>environment/environmentIcon/kitchen_light_open.png</file>
+        <file>environment/environmentIcon/environment_back_hover.png</file>
+        <file>environment/environmentIcon/beep_close.png</file>
+        <file>environment/environmentIcon/beep_open.png</file>
     </qresource>
 </RCC>

@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 //    video.show();
 //    Environment e;
 //    e.show();
+//    e.move(200,200);
 //    Music music;
 //    music.show();
 //    Camera c;

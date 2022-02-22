@@ -205,9 +205,6 @@ void Music::layoutInit()
                                   "QPushButton:hover{border-image:url("":/video/videoIcon/videoExit_hover.png"");}");
     exitPushButton->show();
     connect(exitPushButton,&QPushButton::clicked,mainWidget,[=](){
-        myProcess->close();
-        myProcess->kill();
-        delete myProcess;
         this->close();
     });
 
