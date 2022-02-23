@@ -44,7 +44,7 @@ void WeatherInfo::replyFinished_getWeather(QNetworkReply* reply)
     QTextCodec*textCodec = QTextCodec::codecForName("utf8");
     //使用utf8编码，这样才可以显示中文
     QString weatherInfo = textCodec->toUnicode(reply->readAll());
-    qDebug()<<weatherInfo;
+    //qDebug()<<weatherInfo;
     reply->deleteLater();//最后要释放reply对象
 
     /*     解析天气的json数据        */

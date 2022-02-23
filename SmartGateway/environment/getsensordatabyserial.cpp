@@ -53,7 +53,7 @@ void GetSensorDataBySerial::onMqttConnected()
 {
     if(mqttClient->state()==QMqttClient::Connected)
     {
-        qDebug() << "已连接服务器: "<<mqttClient->hostname();
+        //qDebug() << "已连接服务器: "<<mqttClient->hostname();
         mqttClient->subscribe(QMqttTopicFilter(subscribeTopic));
         connect(mqttClient,&QMqttClient::messageReceived,this,&GetSensorDataBySerial::onMqttReceived);
         reconnectTimer->stop();
@@ -64,7 +64,7 @@ void GetSensorDataBySerial::onMqttConnected()
 
 void GetSensorDataBySerial::onMqttReceived(QByteArray message)
 {
-    qDebug()<<"收到"<< subscribeTopic <<"主题消息:"<<"["<<message<<"]"<<endl;
+    //qDebug()<<"收到"<< subscribeTopic <<"主题消息:"<<"["<<message<<"]"<<endl;
     if(pSerialPort==nullptr) return ;
     //把消息转发到串口
     pSerialPort->write(message);
@@ -110,7 +110,7 @@ void GetSensorDataBySerial::receiveSerialData()
                 recvBuf=pSerialPort->readAll();
                 if(!recvBuf.isEmpty())
                 {
-                    qDebug()<<recvBuf;
+                    //qDebug()<<recvBuf;
                     doucument=QJsonDocument::fromJson(recvBuf,&jsonError);
 
                     if((!doucument.isNull())&&(jsonError.error==QJsonParseError::NoError))//如果json解析没有错误
@@ -122,7 +122,7 @@ void GetSensorDataBySerial::receiveSerialData()
 
                             QString devicesType = object.value("type").toString().trimmed();
                             int devicesId = object.value("deviceId").toInt();
-                            qDebug()<<devicesType<<"  "<<devicesId<<endl;
+                            //qDebug()<<devicesType<<"  "<<devicesId<<endl;
 
                             if(devicesId==1)//livingRoom device
                             {
@@ -199,24 +199,24 @@ void GetSensorDataBySerial::scanSerialPort()
     if(!serialPortList.isEmpty())
     {
         foreach(QSerialPortInfo serialInfo,QSerialPortInfo::availablePorts()){//遍历串口
-            qDebug()<<serialInfo.serialNumber()<<"\n";
+            //qDebug()<<serialInfo.serialNumber()<<"\n";
             if(serialInfo.serialNumber()==QString::fromLocal8Bit("0001"))//判断是否为usb串口0
             {
                 mPortName=serialInfo.portName();
-                qDebug()<<serialInfo.portName()<<"\n";
+                //qDebug()<<serialInfo.portName()<<"\n";
             }
         }
 
         if(mPortName.isNull()&&mPortName.isEmpty())
         {
             emit noSensorSignal();
-            qDebug()<<"mPortName is null"<<"\n";
+            //qDebug()<<"mPortName is null"<<"\n";
             QThread::sleep(1);
         }
 
     }else{
         emit noSensorSignal();
-        qDebug()<<"serialInfo is empty"<<"\n";
+        //qDebug()<<"serialInfo is empty"<<"\n";
         QThread::sleep(1);
     }
 }
@@ -233,9 +233,9 @@ void GetSensorDataBySerial::initSerialPort(QString mPortName)
         pSerialPort->setStopBits(QSerialPort::OneStop);
         pSerialPort->setDataBits(QSerialPort::Data8);
         connect(pSerialPort, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(pSerialPort_onErrorOccurred(QSerialPort::SerialPortError)));
-        qDebug()<<"serial init successfully!"<<"\n";
+        //qDebug()<<"serial init successfully!"<<"\n";
     }else {
-        qDebug()<<"scan port failure"<<"\n";
+        //qDebug()<<"scan port failure"<<"\n";
     }
 }
 
@@ -248,26 +248,26 @@ GetSensorDataBySerial::~GetSensorDataBySerial()
 
 void GetSensorDataBySerial::onLivingRoomLight(QString status)
 {
-    qDebug()<<"status = "<<status<<endl;
+    //qDebug()<<"status = "<<status<<endl;
     pSerialPort->write(status.toUtf8().data(),status.size());
 }
 
 void GetSensorDataBySerial::onLivingRoomBeep(QString status)
 {
-    qDebug()<<"status = "<<status<<endl;
+    //qDebug()<<"status = "<<status<<endl;
     pSerialPort->write(status.toUtf8().data(),status.size());
 }
 
 
 void GetSensorDataBySerial::onkitchenLight(QString status)
 {
-    qDebug()<<"status = "<<status<<endl;
+    //qDebug()<<"status = "<<status<<endl;
     pSerialPort->write(status.toUtf8().data(),status.size());
 }
 
 
 void GetSensorDataBySerial::onkitchenFan(QString status)
 {
-    qDebug()<<"status = "<<status<<endl;
+    //qDebug()<<"status = "<<status<<endl;
     pSerialPort->write(status.toUtf8().data(),status.size());
 }

@@ -11,6 +11,26 @@ SmartGateway::SmartGateway(QWidget *parent): QWidget(parent)
     this->setFixedSize(800, 480);
     this->setStyleSheet("background-color:rgb(30,41,61)");
     layoutInit();//初始化界面
+
+    //创建子线程
+    subThread= new QThread;
+
+    // 千万不要指定给创建的任务对象指定父对象
+    // 如果指定了: QObject::moveToThread: Cannot move objects with a parent
+    messageBoard = new MessageBoard;
+
+    //将任务对象移动到子线程中
+    messageBoard->moveToThread(subThread);
+    //启动子线程
+    subThread->start();
+    connect(subThread, &QThread::started, messageBoard, &MessageBoard::working);//子线程开启后，自动执行working()函数
+    connect(subThread,&QThread::finished,messageBoard,&QObject::deleteLater);//释放getSensorDataBySerialTask对象空间
+    connect(subThread,&QThread::finished,subThread,&QObject::deleteLater);//释放subThread对象空间
+    connect(messageBoard,&MessageBoard::finished,subThread,&QThread::quit);
+    connect(messageBoard,&MessageBoard::getMqttMessage,messageBoard_content,[=](QByteArray message){
+        messageBoard_content->setText(QString(message));
+    });
+
 }
 SmartGateway::~SmartGateway()
 {
@@ -99,7 +119,9 @@ void SmartGateway::layoutInit()
 
     messageBoard_content = new QLabel(this);
     messageBoard_content->setGeometry(10,290,210,180);
-    messageBoard_content->setAlignment(Qt::AlignCenter);
+    messageBoard_content->setAlignment(Qt::AlignVCenter);
+    messageBoard_content->setWordWrap(true);
+    messageBoard_content->setMargin(5);
     messageBoard_content->setStyleSheet("border: 1px solid;border-color:white;font-size:16px;color:white");
     messageBoard_content->installEventFilter(this);
 
@@ -128,14 +150,14 @@ bool SmartGateway::eventFilter(QObject * watched, QEvent * event)
 //            //getCityName();//单击获取最新的天气
 //        }
 //    }
-//    if(watched == messageBoard_content)
-//    {
-//        if(event->type() == QEvent::MouseButtonPress)
-//        {
-//            messageBoard_content->setText("");
-//            //调用语音助手
-//        }
-//    }
+    if(watched == messageBoard_content)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+            messageBoard_content->setText("");
+            //调用语音助手
+        }
+    }
     return false;//处理完事件后，不需要事件继续传播
     //return SmartGateway::eventFilter(watched, event);//继续传播，如果注释上一行，程序不能运行
 }

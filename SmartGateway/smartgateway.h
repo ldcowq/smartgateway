@@ -11,11 +11,13 @@
 #include <QJsonDocument>
 #include<QJsonArray>
 #include<QProcess>
+#include <QThread>
 #include "slidepage/slidepage.h"
 #include "app/app.h"
 #include "app2/app2.h"
 #include "album/album.h"
 #include "weather/weatherinfo.h"
+#include "messageBoard/messageboard.h"
 
 #define QUERY_IP_URL "http://ip.ws.126.net/ipquery"
 #define QUERY_WEATHER_URL "http://wthrcdn.etouch.cn/weather_mini?city="
@@ -68,7 +70,8 @@ public:
     /***********************留言板界面**************************************/
     QLabel * messageBoard_Title;
     QLabel *messageBoard_content;
-
+    QThread *subThread;
+    MessageBoard *messageBoard;
     /************************滑动app界面******************************************/
     /*滑动主窗口*/
     QWidget *appWidget;
