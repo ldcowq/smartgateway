@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     monitor/opencvdecode.cpp \
     camera/monitorcateye.cpp \
     camera/cateye.cpp \
-    messageBoard/messageboard.cpp
+    messageBoard/messageboard.cpp \
+    tools/RoundImageWidget.cpp
 
 HEADERS  += smartgateway.h \
     slidepage/slidepage.h \
@@ -63,7 +64,8 @@ HEADERS  += smartgateway.h \
     monitor/opencvdecode.h \
     camera/monitorcateye.h \
     camera/cateye.h \
-    messageBoard/messageboard.h
+    messageBoard/messageboard.h \
+    tools/RoundImageWidget.h
 
 RESOURCES += \
     res.qrc

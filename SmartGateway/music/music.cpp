@@ -107,6 +107,11 @@ void Music::layoutInit()
     //mainWidget->setStyleSheet("#music{border-image:url(/mnt/sd/image/4.jpg)}");
     mainWidget->setStyleSheet("background-color:#3b3b3b");
 
+//    m_roundImageWidget = new RoundImageWidget(this);
+//    m_roundImageWidget->setGeometry(100, 100, 300, 300);
+//    m_roundImageWidget->startRotateAnimation();
+
+
     playMusicPushButton = new  QPushButton(mainWidget);
     playMusicPushButton->setGeometry(80,440,32,32);
     playMusicPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPause.png"");}"
