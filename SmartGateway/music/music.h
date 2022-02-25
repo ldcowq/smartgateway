@@ -10,6 +10,7 @@
 #include <QTimer>
 #include "tools/filetools.h"
 #include "video/customslider.h"
+#include "tools/RoundImageWidget.h"
 class Music : public QWidget
 {
     Q_OBJECT
@@ -19,6 +20,7 @@ public:
     void layoutInit();
     void playMusic(QString file);
     QWidget *mainWidget;
+    RoundImageWidget *m_roundImageWidget;
     QPushButton *playMusicPushButton;
     QPushButton *lastMusicPushButton;
     QPushButton *nextMusicPushButton;

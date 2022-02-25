@@ -10,7 +10,7 @@ Music::Music(QWidget *parent) : QWidget(parent)
     myProcess = new QProcess(mainWidget);//给进程分配内存
 
     songListWidget = new QListWidget(mainWidget);
-    songListWidget->setGeometry(650,0,150,480);
+    songListWidget->setGeometry(600,0,200,480);
     songListWidget->show();
     songListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//关闭水平滚动条
     //songListWidget->setFrameShape(QListWidget::NoFrame);//去除边框
@@ -107,13 +107,14 @@ void Music::layoutInit()
     //mainWidget->setStyleSheet("#music{border-image:url(/mnt/sd/image/4.jpg)}");
     mainWidget->setStyleSheet("background-color:#3b3b3b");
 
-//    m_roundImageWidget = new RoundImageWidget(this);
-//    m_roundImageWidget->setGeometry(100, 100, 300, 300);
-//    m_roundImageWidget->startRotateAnimation();
+    m_roundImageWidget = new RoundImageWidget(mainWidget);
+    m_roundImageWidget->setGeometry(200, 100, 200, 200);
+    m_roundImageWidget->startRotateAnimation();
+    m_roundImageWidget->show();
 
 
     playMusicPushButton = new  QPushButton(mainWidget);
-    playMusicPushButton->setGeometry(80,440,32,32);
+    playMusicPushButton->setGeometry(75,430,32,32);
     playMusicPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPause.png"");}"
                                   "QPushButton:hover{border-image:url("":/video/videoIcon/videoPause_hover.png"");}");
     playMusicPushButton->show();
@@ -151,7 +152,7 @@ void Music::layoutInit()
     lastMusicPushButton= new  QPushButton(mainWidget);
     lastMusicPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoPrevious.png"");}"
                                   "QPushButton:hover{border-image:url("":/video/videoIcon/videoPrevious_hover.png"");}");
-    lastMusicPushButton->setGeometry(20,440,32,32);
+    lastMusicPushButton->setGeometry(20,430,32,32);
     lastMusicPushButton->show();
     connect(lastMusicPushButton,&QPushButton::clicked,mainWidget,[=](){
         myProcess->close();
@@ -170,7 +171,7 @@ void Music::layoutInit()
     });
 
     nextMusicPushButton= new  QPushButton(mainWidget);
-    nextMusicPushButton->setGeometry(140,440,32,32);
+    nextMusicPushButton->setGeometry(130,430,32,32);
     nextMusicPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoNext.png"");}"
                                   "QPushButton:hover{border-image:url("":/video/videoIcon/videoNext_hover.png"");}");
     nextMusicPushButton->show();
@@ -205,7 +206,7 @@ void Music::layoutInit()
     musicName->show();
 
     exitPushButton= new  QPushButton(mainWidget);
-    exitPushButton->setGeometry(600,440,32,32);
+    exitPushButton->setGeometry(550,430,32,32);
     exitPushButton->setStyleSheet("QPushButton{border-image:url("":/video/videoIcon/videoExit.png"");}"
                                   "QPushButton:hover{border-image:url("":/video/videoIcon/videoExit_hover.png"");}");
     exitPushButton->show();
