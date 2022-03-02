@@ -8,7 +8,7 @@ RoundImageWidget::RoundImageWidget(QWidget *parent) : QWidget(parent)
 {
     m_rotateAngle = 0.0;
 
-    QString backgroundImageName(":/Images/thumb.jpg");
+    QString backgroundImageName("/home/pi/workdir/smgw_media/photos/5.jpg");
     bool isLoadOk = m_backgroundImage.load(backgroundImageName);
     if (!isLoadOk) {
         qDebug()<< "load" << backgroundImageName << "failed !";

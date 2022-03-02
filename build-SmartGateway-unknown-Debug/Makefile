@@ -70,7 +70,8 @@ SOURCES       = ../SmartGateway/main.cpp \
 		../SmartGateway/monitor/opencvdecode.cpp \
 		../SmartGateway/camera/monitorcateye.cpp \
 		../SmartGateway/camera/cateye.cpp \
-		../SmartGateway/messageBoard/messageboard.cpp qrc_res.cpp \
+		../SmartGateway/messageBoard/messageboard.cpp \
+		../SmartGateway/tools/RoundImageWidget.cpp qrc_res.cpp \
 		moc_smartgateway.cpp \
 		moc_slidepage.cpp \
 		moc_app.cpp \
@@ -89,7 +90,8 @@ SOURCES       = ../SmartGateway/main.cpp \
 		moc_opencvdecode.cpp \
 		moc_monitorcateye.cpp \
 		moc_cateye.cpp \
-		moc_messageboard.cpp
+		moc_messageboard.cpp \
+		moc_RoundImageWidget.cpp
 OBJECTS       = main.o \
 		smartgateway.o \
 		slidepage.o \
@@ -111,6 +113,7 @@ OBJECTS       = main.o \
 		monitorcateye.o \
 		cateye.o \
 		messageboard.o \
+		RoundImageWidget.o \
 		qrc_res.o \
 		moc_smartgateway.o \
 		moc_slidepage.o \
@@ -130,7 +133,8 @@ OBJECTS       = main.o \
 		moc_opencvdecode.o \
 		moc_monitorcateye.o \
 		moc_cateye.o \
-		moc_messageboard.o
+		moc_messageboard.o \
+		moc_RoundImageWidget.o
 DIST          = /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/common/unix.conf \
 		/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/common/linux.conf \
@@ -253,7 +257,8 @@ DIST          = /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/spec_pre.prf \
 		../SmartGateway/monitor/opencvdecode.h \
 		../SmartGateway/camera/monitorcateye.h \
 		../SmartGateway/camera/cateye.h \
-		../SmartGateway/messageBoard/messageboard.h ../SmartGateway/main.cpp \
+		../SmartGateway/messageBoard/messageboard.h \
+		../SmartGateway/tools/RoundImageWidget.h ../SmartGateway/main.cpp \
 		../SmartGateway/smartgateway.cpp \
 		../SmartGateway/slidepage/slidepage.cpp \
 		../SmartGateway/app/app.cpp \
@@ -273,7 +278,8 @@ DIST          = /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/spec_pre.prf \
 		../SmartGateway/monitor/opencvdecode.cpp \
 		../SmartGateway/camera/monitorcateye.cpp \
 		../SmartGateway/camera/cateye.cpp \
-		../SmartGateway/messageBoard/messageboard.cpp
+		../SmartGateway/messageBoard/messageboard.cpp \
+		../SmartGateway/tools/RoundImageWidget.cpp
 QMAKE_TARGET  = SmartGateway
 DESTDIR       = 
 TARGET        = SmartGateway
@@ -528,8 +534,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../SmartGateway/res.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../SmartGateway/smartgateway.h ../SmartGateway/slidepage/slidepage.h ../SmartGateway/app/app.h ../SmartGateway/app2/app2.h ../SmartGateway/album/album.h ../SmartGateway/tools/filetools.h ../SmartGateway/video/video.h ../SmartGateway/music/music.h ../SmartGateway/tools/switchbutton.h ../SmartGateway/environment/environment.h ../SmartGateway/environment/getsensordatabyserial.h ../SmartGateway/homecontrol/homecontrol.h ../SmartGateway/camera/camera.h ../SmartGateway/weather/weatherinfo.h ../SmartGateway/video/customslider.h monitor.h ../SmartGateway/monitor/monitor.h ../SmartGateway/monitor/opencvdecode.h ../SmartGateway/camera/monitorcateye.h ../SmartGateway/camera/cateye.h ../SmartGateway/messageBoard/messageboard.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../SmartGateway/main.cpp ../SmartGateway/smartgateway.cpp ../SmartGateway/slidepage/slidepage.cpp ../SmartGateway/app/app.cpp ../SmartGateway/app2/app2.cpp ../SmartGateway/album/album.cpp ../SmartGateway/tools/filetools.cpp ../SmartGateway/video/video.cpp ../SmartGateway/music/music.cpp ../SmartGateway/tools/switchbutton.cpp ../SmartGateway/environment/environment.cpp ../SmartGateway/environment/getsensordatabyserial.cpp ../SmartGateway/homecontrol/homecontrol.cpp ../SmartGateway/camera/camera.cpp ../SmartGateway/weather/weatherinfo.cpp ../SmartGateway/video/customslider.cpp ../SmartGateway/monitor/monitor.cpp ../SmartGateway/monitor/opencvdecode.cpp ../SmartGateway/camera/monitorcateye.cpp ../SmartGateway/camera/cateye.cpp ../SmartGateway/messageBoard/messageboard.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../SmartGateway/smartgateway.h ../SmartGateway/slidepage/slidepage.h ../SmartGateway/app/app.h ../SmartGateway/app2/app2.h ../SmartGateway/album/album.h ../SmartGateway/tools/filetools.h ../SmartGateway/video/video.h ../SmartGateway/music/music.h ../SmartGateway/tools/switchbutton.h ../SmartGateway/environment/environment.h ../SmartGateway/environment/getsensordatabyserial.h ../SmartGateway/homecontrol/homecontrol.h ../SmartGateway/camera/camera.h ../SmartGateway/weather/weatherinfo.h ../SmartGateway/video/customslider.h monitor.h ../SmartGateway/monitor/monitor.h ../SmartGateway/monitor/opencvdecode.h ../SmartGateway/camera/monitorcateye.h ../SmartGateway/camera/cateye.h ../SmartGateway/messageBoard/messageboard.h ../SmartGateway/tools/RoundImageWidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../SmartGateway/main.cpp ../SmartGateway/smartgateway.cpp ../SmartGateway/slidepage/slidepage.cpp ../SmartGateway/app/app.cpp ../SmartGateway/app2/app2.cpp ../SmartGateway/album/album.cpp ../SmartGateway/tools/filetools.cpp ../SmartGateway/video/video.cpp ../SmartGateway/music/music.cpp ../SmartGateway/tools/switchbutton.cpp ../SmartGateway/environment/environment.cpp ../SmartGateway/environment/getsensordatabyserial.cpp ../SmartGateway/homecontrol/homecontrol.cpp ../SmartGateway/camera/camera.cpp ../SmartGateway/weather/weatherinfo.cpp ../SmartGateway/video/customslider.cpp ../SmartGateway/monitor/monitor.cpp ../SmartGateway/monitor/opencvdecode.cpp ../SmartGateway/camera/monitorcateye.cpp ../SmartGateway/camera/cateye.cpp ../SmartGateway/messageBoard/messageboard.cpp ../SmartGateway/tools/RoundImageWidget.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -610,9 +616,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h /usr/lib/arm-linux-gnueabihf/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_smartgateway.cpp moc_slidepage.cpp moc_app.cpp moc_app2.cpp moc_album.cpp moc_video.cpp moc_music.cpp moc_switchbutton.cpp moc_environment.cpp moc_getsensordatabyserial.cpp moc_homecontrol.cpp moc_camera.cpp moc_weatherinfo.cpp moc_customslider.cpp moc_monitor.cpp moc_opencvdecode.cpp moc_monitorcateye.cpp moc_cateye.cpp moc_messageboard.cpp
+compiler_moc_header_make_all: moc_smartgateway.cpp moc_slidepage.cpp moc_app.cpp moc_app2.cpp moc_album.cpp moc_video.cpp moc_music.cpp moc_switchbutton.cpp moc_environment.cpp moc_getsensordatabyserial.cpp moc_homecontrol.cpp moc_camera.cpp moc_weatherinfo.cpp moc_customslider.cpp moc_monitor.cpp moc_opencvdecode.cpp moc_monitorcateye.cpp moc_cateye.cpp moc_messageboard.cpp moc_RoundImageWidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_smartgateway.cpp moc_slidepage.cpp moc_app.cpp moc_app2.cpp moc_album.cpp moc_video.cpp moc_music.cpp moc_switchbutton.cpp moc_environment.cpp moc_getsensordatabyserial.cpp moc_homecontrol.cpp moc_camera.cpp moc_weatherinfo.cpp moc_customslider.cpp moc_monitor.cpp moc_opencvdecode.cpp moc_monitorcateye.cpp moc_cateye.cpp moc_messageboard.cpp
+	-$(DEL_FILE) moc_smartgateway.cpp moc_slidepage.cpp moc_app.cpp moc_app2.cpp moc_album.cpp moc_video.cpp moc_music.cpp moc_switchbutton.cpp moc_environment.cpp moc_getsensordatabyserial.cpp moc_homecontrol.cpp moc_camera.cpp moc_weatherinfo.cpp moc_customslider.cpp moc_monitor.cpp moc_opencvdecode.cpp moc_monitorcateye.cpp moc_cateye.cpp moc_messageboard.cpp moc_RoundImageWidget.cpp
 moc_smartgateway.cpp: ../SmartGateway/slidepage/slidepage.h \
 		../SmartGateway/app/app.h \
 		../SmartGateway/album/album.h \
@@ -823,6 +829,11 @@ moc_messageboard.cpp: ../../../../3rdLib/qtmqtt/include/QtMqtt/QMqttClient \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/pi/workdir/qtProjects/smgw/smartgateway/build-SmartGateway-unknown-Debug/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/pi/workdir/qtProjects/smgw/smartgateway/SmartGateway -I/home/pi/workdir/3rdLib/qtmqtt/include -I/usr/local/include -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtMultimediaWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtMultimedia -I/usr/include/arm-linux-gnueabihf/qt5/QtCharts -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtMqtt -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtSerialPort -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I. -I/usr/include/c++/8 -I/usr/include/arm-linux-gnueabihf/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/arm-linux-gnueabihf/8/include -I/usr/local/include -I/usr/lib/gcc/arm-linux-gnueabihf/8/include-fixed -I/usr/include/arm-linux-gnueabihf -I/usr/include ../SmartGateway/messageBoard/messageboard.h -o moc_messageboard.cpp
+
+moc_RoundImageWidget.cpp: ../SmartGateway/tools/RoundImageWidget.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/pi/workdir/qtProjects/smgw/smartgateway/build-SmartGateway-unknown-Debug/moc_predefs.h -I/usr/lib/arm-linux-gnueabihf/qt5/mkspecs/linux-g++ -I/home/pi/workdir/qtProjects/smgw/smartgateway/SmartGateway -I/home/pi/workdir/3rdLib/qtmqtt/include -I/usr/local/include -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/usr/include/arm-linux-gnueabihf/qt5 -I/usr/include/arm-linux-gnueabihf/qt5/QtMultimediaWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtMultimedia -I/usr/include/arm-linux-gnueabihf/qt5/QtCharts -I/usr/include/arm-linux-gnueabihf/qt5/QtWidgets -I/usr/include/arm-linux-gnueabihf/qt5/QtGui -I/usr/include/arm-linux-gnueabihf/qt5/QtMqtt -I/usr/include/arm-linux-gnueabihf/qt5/QtNetwork -I/usr/include/arm-linux-gnueabihf/qt5/QtSerialPort -I/usr/include/arm-linux-gnueabihf/qt5/QtCore -I. -I/usr/include/c++/8 -I/usr/include/arm-linux-gnueabihf/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/arm-linux-gnueabihf/8/include -I/usr/local/include -I/usr/lib/gcc/arm-linux-gnueabihf/8/include-fixed -I/usr/include/arm-linux-gnueabihf -I/usr/include ../SmartGateway/tools/RoundImageWidget.h -o moc_RoundImageWidget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1052,6 +1063,9 @@ messageboard.o: ../SmartGateway/messageBoard/messageboard.cpp ../SmartGateway/me
 		../../../../3rdLib/qtmqtt/src/mqtt/qmqtttopicfilter.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o messageboard.o ../SmartGateway/messageBoard/messageboard.cpp
 
+RoundImageWidget.o: ../SmartGateway/tools/RoundImageWidget.cpp ../SmartGateway/tools/RoundImageWidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RoundImageWidget.o ../SmartGateway/tools/RoundImageWidget.cpp
+
 qrc_res.o: qrc_res.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_res.o qrc_res.cpp
 
@@ -1111,6 +1125,9 @@ moc_cateye.o: moc_cateye.cpp
 
 moc_messageboard.o: moc_messageboard.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_messageboard.o moc_messageboard.cpp
+
+moc_RoundImageWidget.o: moc_RoundImageWidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_RoundImageWidget.o moc_RoundImageWidget.cpp
 
 ####### Install
 
