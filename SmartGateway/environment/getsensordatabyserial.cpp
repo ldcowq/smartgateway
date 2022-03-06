@@ -129,6 +129,7 @@ void GetSensorDataBySerial::receiveSerialData()
                                 //qDebug()<<"emit livingRoom heart beat:"<<devicesId<<endl;
                                 int state = object.value("state").toInt();
                                 emit sendLivingRoomHeartBeat(devicesId,state);
+                                return;
                             }
 
                             if(devicesId==2)//kitchen device
@@ -136,6 +137,7 @@ void GetSensorDataBySerial::receiveSerialData()
                                 //qDebug()<<"emit kitchen heart beat:"<<devicesId<<endl;
                                 int state = object.value("state").toInt();
                                 emit sendKitchenHeartBeat(devicesId,state);
+                                return;
                             }
 
                             if(QString::compare("kitchen",devicesType)==0)
