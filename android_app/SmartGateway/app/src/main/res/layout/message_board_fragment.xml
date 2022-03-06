@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.message.messageBoardFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/messageBoard_image"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/messageboard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/message_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:text="留言板"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.206"
+            app:layout_constraintStart_toEndOf="@+id/messageBoard_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/message_LinearLayout"
+            android:layout_width="320dp"
+            android:layout_height="380dp"
+            android:layout_marginTop="170dp"
+            android:gravity="start|top"
+            android:background="#e2e2e2"
+            android:inputType="textMultiLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/message_inPut_MultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:inputType="textMultiLine"
+                android:background="#e2e2e2"
+                android:hint="请输入留言信息："
+                android:textSize="24sp"
+                android:gravity="left|top"
+                android:paddingTop="5dp"
+
+                android:baselineAligned="false" />
+        </LinearLayout>
+
+
+
+        <Button
+            android:id="@+id/sendMessage_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/white_edittext"
+            android:drawableRight="@drawable/sendmessage"
+            android:text=" 发 送"
+            android:textColor="#E65A8BD8"
+            android:textSize="26sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_LinearLayout" />
+
+        <Button
+            android:id="@+id/clearMessage_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/white_edittext"
+            android:drawableRight="@drawable/clearmessage"
+            android:text=" 清 空"
+            android:textColor="#E65A8BD8"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_LinearLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
