@@ -205,7 +205,7 @@ public class ControlFragment extends Fragment {
     private void mqttInit() {
         try {
             //host为服务器主机名，ClientId_editText获取客户端的id，MemoryPersistence设置客户端id的保存形式，默认为内存保存
-            String serverURI = "tcp://106.13.7.2:1883";
+            String serverURI = "tcp://你的服务器IP:1883";//请填写你自己的服务器IP
             //Toast.makeText(MyApplication.getContext(), serverURI, Toast.LENGTH_SHORT).show();
 
             mqttClient = new MqttAsyncClient(serverURI, "hostPhone_control", new MemoryPersistence());

@@ -45,11 +45,11 @@ public class HomeFragment extends Fragment {
     private int carbon;
     private int smoke;
 
-    private String serverURI = "tcp://106.13.7.2:1883";
+    private String serverURI = "tcp://你的服务器IP:1883";//请填写你自己的服务器IP
     private String topic = "SmartGatewayPub";
     private String userName = "phone";
     private String passWord = "222222";
-    private String mqtt_id = "1057745451";
+    private String mqtt_id = "105d51";
     private ScheduledExecutorService scheduler;
 
     private Switch getdata_swith;

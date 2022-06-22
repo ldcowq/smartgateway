@@ -37,7 +37,7 @@ void GetSensorDataBySerial::connectMqtt()
         disconnectMqtt(&mqttClient);
     }
     mqttClient = new QMqttClient();
-    mqttClient->setHostname("106.13.7.2");
+    mqttClient->setHostname("你的ip地址");
     mqttClient->setPort(1883);
     mqttClient->setClientId("0001");
     mqttClient->setUsername("User_Gateway_1");

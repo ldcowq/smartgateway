@@ -65,7 +65,7 @@ public class homeEnvironmenFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    OkHttpUtil.sendHttpRequest("http://106.13.7.2:8080/smarthome/QuerySensor?pageNo=1&&pageSize=20", new Callback() {
+                    OkHttpUtil.sendHttpRequest("http://你的ip地址:8080/smarthome/QuerySensor?pageNo=1&&pageSize=20", new Callback() {
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                             String responseData = response.body().string();
